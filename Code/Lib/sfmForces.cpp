@@ -1,5 +1,6 @@
 #include "sfmBasicTypes.h"
 #include "sfmForces.h"
+#include <vector>
 #include <cmath>
 
 const double dt = 2;
@@ -72,6 +73,16 @@ sfm::dir2d ped_ped_repulsive_force(Pedestrian pedestrian_1, Pedestrian pedestria
     }
     return result;
 }
+
+sfm::dir2d aggregate_ped_ped_repulsive_force(Pedestrian pedestrian_1, std::vector<Pedestrian> pedestrians)
+{
+    sfm::dir2d result;
+    for (auto const& i : pedestrians){
+        result = result + ped_ped_repulsive_force(pedestrian_1, i);
+    }
+    return result;
+}
+
 
 
 }
