@@ -3,6 +3,9 @@
 #include <cmath>
 
 const double dt = 2;
+const double sigma = 0.3;
+const double U_0 = 10;
+const double c = 0.5;
 
 
 namespace sfm 
@@ -44,5 +47,31 @@ double semiminor_axis_ellipse(Pedestrian pedestrian_1, Pedestrian pedestrian_2)
     double term_3 = desired_speed_pedestrian_2*dt;
     return sqrt(pow((term_1 +term_2),2)-pow(term_3,2));
 }
+
+sfm::dir2d ped_ped_repulsive_force_no_line_sight(Pedestrian pedestrian_1, Pedestrian pedestrian_2)
+{
+    double semiminor_axis = semiminor_axis_ellipse(pedestrian_1, pedestrian_2);
+    double scalars = (semiminor_axis/sigma)*U_0*exp(-(semiminor_axis/sigma));
+    sfm::pos2d position__pedestrian_1 = pedestrian_1.getposition();
+    sfm::pos2d position_pedestrian_2 = pedestrian_2.getposition();
+    sfm::dir2d direction_vector = position_pedestrian_2.direction(position__pedestrian_1);
+    sfm::dir2d unit_vector = direction_vector*(1/sqrt(direction_vector.scalar_product(direction_vector)));
+    return unit_vector*scalars;
+}
+
+sfm::dir2d ped_ped_repulsive_force(Pedestrian pedestrian_1, Pedestrian pedestrian_2)
+{
+    sfm::dir2d force_no_line_sight = ped_ped_repulsive_force_no_line_sight(pedestrian_1, pedestrian_2);
+    sfm::dir2d desired_direction_pedestrian_1 = desired_direction_unit_vector(pedestrian_1);
+    sfm::dir2d result;
+    if (desired_direction_pedestrian_1.scalar_product(force_no_line_sight) >= force_no_line_sight.scalar_product(force_no_line_sight)*force_no_line_sight.cos_angle(desired_direction_pedestrian_1)) {
+        result = force_no_line_sight;
+    } 
+    else {
+        result = force_no_line_sight*c;
+    }
+    return result;
+}
+
 
 }
