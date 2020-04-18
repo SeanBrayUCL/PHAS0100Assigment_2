@@ -3,8 +3,6 @@
 
 #include "sfmBasicTypes.h"
 
-namespace sfm {
-
 class Pedestrian {
     
     private:
@@ -28,7 +26,5 @@ class Pedestrian {
         double getrelaxation_time()  { return m_relaxation_time; }
 
 };
-
-}
 
 #endif

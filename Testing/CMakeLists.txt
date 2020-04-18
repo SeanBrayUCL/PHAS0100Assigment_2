@@ -19,6 +19,7 @@ set(TEST_CASES
   sfmBasicTest
   sfmCommandLineArgsTest
   sfmTypesTest
+  sfmModelTests
 )
 
 foreach(_test_case ${TEST_CASES})
