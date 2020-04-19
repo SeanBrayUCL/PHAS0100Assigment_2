@@ -112,6 +112,13 @@ sfm::dir2d border_pedestrian_force(Pedestrian pedestrian)
     return (U_0/R)*exp(-(vector_norm/R))*unit_vector;
 }
 
+sfm::dir2d total_force(Pedestrian pedestiran_1, std::vector<Pedestrian> pedestrians)
+{
+    sfm::dir2d force_1 = attractive_force_to_destination(pedestiran_1);
+    sfm::dir2d force_2 = aggregate_ped_ped_repulsive_force(pedestiran_1, pedestrians);
+    sfm::dir2d force_3 = border_pedestrian_force(pedestiran_1);
+    return force_1 + force_2 + force_3;
+}
 
 
 
