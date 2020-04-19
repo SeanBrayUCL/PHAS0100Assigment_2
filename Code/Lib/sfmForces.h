@@ -24,5 +24,9 @@ sfm::dir2d ped_ped_repulsive_force(Pedestrian pedestrian_1, Pedestrian pedestria
 //force 2 - aggregate for a pedestrian
 sfm::dir2d aggregate_ped_ped_repulsive_force(Pedestrian pedestrian_1, std::vector<Pedestrian> pedestrians);
 
+//returns unit vector which points to the closest y boundary
+sfm::dir2d unit_border_vector(Pedestrian pedestrian);
+
+
 }
 #endif

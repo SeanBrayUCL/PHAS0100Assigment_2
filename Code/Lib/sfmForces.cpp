@@ -5,8 +5,10 @@
 
 const double dt = 2;
 const double sigma = 0.3;
-const double U_0 = 10;
+const double V_0 = 2.1;
 const double c = 0.5;
+const double U_0 = 10;
+const double R = 0.2;
 
 
 namespace sfm 
@@ -52,7 +54,7 @@ double semiminor_axis_ellipse(Pedestrian pedestrian_1, Pedestrian pedestrian_2)
 sfm::dir2d ped_ped_repulsive_force_no_line_sight(Pedestrian pedestrian_1, Pedestrian pedestrian_2)
 {
     double semiminor_axis = semiminor_axis_ellipse(pedestrian_1, pedestrian_2);
-    double scalars = (semiminor_axis/sigma)*U_0*exp(-(semiminor_axis/sigma));
+    double scalars = (semiminor_axis/sigma)*V_0*exp(-(semiminor_axis/sigma));
     sfm::pos2d position__pedestrian_1 = pedestrian_1.getposition();
     sfm::pos2d position_pedestrian_2 = pedestrian_2.getposition();
     sfm::dir2d direction_vector = position_pedestrian_2.direction(position__pedestrian_1);
@@ -82,6 +84,34 @@ sfm::dir2d aggregate_ped_ped_repulsive_force(Pedestrian pedestrian_1, std::vecto
     }
     return result;
 }
+
+sfm::dir2d border_vector(Pedestrian pedestrian)
+{
+    double y_wrap = sfm::pos2d::get_y_wrap();
+    sfm::pos2d position = pedestrian.getposition();
+    sfm::pos2d y__bottom_border(position[1],0); //x coordinate same as position, y coordinate on border
+    sfm::pos2d y__top_border(position[1],y_wrap-0.01); //y coordinate zero on y_wrap so take value close to y_wrap
+    double distance_to_bottom_border = position.distance(y__bottom_border);
+    sfm::dir2d direction_bottom_vector = position.direction(y__bottom_border);
+    sfm::dir2d direction_top_vector = position.direction(y__top_border);
+    sfm:dir2d result;
+    if (distance_to_bottom_border < (y_wrap*(1/2))){
+        result = direction_bottom_vector;
+    }
+    else {
+        result = direction_top_vector;
+    }
+    return result;
+}
+
+sfm::dir2d border_pedestrian_force(Pedestrian pedestrian)
+{
+    sfm::dir2d vector = border_vector(pedestrian);
+    double vector_norm = sqrt(vector.scalar_product(vector));
+    sfm::dir2d unit_vector = vector*(1/vector_norm);
+    return (U_0/R)*exp(-(vector_norm/R))*unit_vector;
+}
+
 
 
 
