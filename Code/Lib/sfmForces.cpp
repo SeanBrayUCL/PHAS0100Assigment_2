@@ -48,7 +48,7 @@ double semiminor_axis_ellipse(Pedestrian pedestrian_1, Pedestrian pedestrian_2)
     double term_2 = sqrt(direction_vector_less_velocity.scalar_product(direction_vector_less_velocity));
 
     double term_3 = desired_speed_pedestrian_2*dt;
-    return sqrt(pow((term_1 +term_2),2)-pow(term_3,2));
+    return sqrt(pow((term_1 +term_2),2)-pow(term_3,2))*(1/2);
 }
 
 sfm::dir2d ped_ped_repulsive_force_no_line_sight(Pedestrian pedestrian_1, Pedestrian pedestrian_2)
