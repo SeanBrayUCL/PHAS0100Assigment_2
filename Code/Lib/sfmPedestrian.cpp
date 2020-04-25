@@ -1,5 +1,5 @@
 #include "sfmBasicTypes.h"
-#include "sfmPedestrian.h"
+#include "sfmTargetedPedestrian.h"
  
 // Date constructor
 Pedestrian::Pedestrian(sfm::pos2d origin, sfm::pos2d destination, sfm::dir2d velocity, sfm::pos2d position, double desired_speed, double relaxation_time)

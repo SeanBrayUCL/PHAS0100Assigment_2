@@ -19,6 +19,8 @@ set(PHAS0100ASSIGNMENT2_LIBRARY_SRCS
   sfmMyFunctions.cpp
   sfmException.cpp
   sfmForces.cpp
+  sfmTargetedPedestrian.cpp
+  sfmDirectedPedestrian.cpp
 )
 
 if (VTK_FOUND)
