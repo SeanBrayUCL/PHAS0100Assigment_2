@@ -25,6 +25,11 @@ class Pedestrian {
         double getdesired_speed() { return m_desired_speed; }
         double getrelaxation_time()  { return m_relaxation_time; }
 
+        void setvelocity(sfm::dir2d velocity) {m_velocity = velocity;}
+        void setposition(sfm::pos2d position) {m_position = position;}
+
+
+
 };
 
 #endif
