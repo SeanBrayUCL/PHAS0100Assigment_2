@@ -13,7 +13,7 @@
 #============================================================================*/
 
 set(_command_line_apps
-  sfmMyFirstApp
+  sfmNewton_Equations_three_Pedestrians
 )
 
 if (VTK_FOUND)
