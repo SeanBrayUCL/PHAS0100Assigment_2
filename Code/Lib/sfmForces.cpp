@@ -39,7 +39,12 @@ double semiminor_axis_ellipse(Pedestrian pedestrian_1, Pedestrian pedestrian_2)
     sfm::pos2d position__pedestrian_1 = pedestrian_1.getposition();
     sfm::pos2d position_pedestrian_2 = pedestrian_2.getposition();
     sfm::dir2d direction_vector = position_pedestrian_2.direction(position__pedestrian_1);
-    double term_1 = sqrt(direction_vector.scalar_product(direction_vector));
+    double result;
+    if (direction_vector.scalar_product(direction_vector)==0){
+        result = 0;
+    }
+    else{
+         double term_1 = sqrt(direction_vector.scalar_product(direction_vector));
 
     sfm::dir2d desired_direction_pedestrian_2 = desired_direction_unit_vector(pedestrian_2);
     double desired_speed_pedestrian_2 = pedestrian_2.getdesired_speed();
@@ -50,6 +55,8 @@ double semiminor_axis_ellipse(Pedestrian pedestrian_1, Pedestrian pedestrian_2)
     double term_3 = desired_speed_pedestrian_2*dt;
     double result =  sqrt(pow((term_1 + term_2),2)-pow(term_3,2));
     result = result*0.5;
+
+    }
     return result;
 
 }
