@@ -68,7 +68,10 @@ sfm::dir2d ped_ped_repulsive_force_no_line_sight(Pedestrian pedestrian_1, Pedest
     sfm::pos2d position__pedestrian_1 = pedestrian_1.getposition();
     sfm::pos2d position_pedestrian_2 = pedestrian_2.getposition();
     sfm::dir2d direction_vector = position_pedestrian_2.direction(position__pedestrian_1);
-    sfm::dir2d unit_vector = direction_vector*(1/sqrt(direction_vector.scalar_product(direction_vector)));
+    sfm::dir2d unit_vector(0,0);
+    if (direction_vector.scalar_product(direction_vector) != 0){
+        unit_vector = unit_vector + direction_vector*(1/sqrt(direction_vector.scalar_product(direction_vector)));
+    }
     return unit_vector*scalars;
 }
 

@@ -79,7 +79,7 @@ TEST_CASE("Test ped_ped_repulsive_force", "[Tests]") {
     // position on x/y_wrap should be same as (0,0)
     REQUIRE(sfm::ped_ped_repulsive_force(pedestrian_1,pedestrian_2)[0] == 0); //no force in y direction
     REQUIRE(sfm::ped_ped_repulsive_force(pedestrian_1,pedestrian_2)[1] <= 0); // force should be repulsive
-    REQUIRE(sfm::ped_ped_repulsive_force(pedestrian_1,pedestrian_2)[1] < sfm::ped_ped_repulsive_force(pedestrian_1,pedestrian_3)[1]); //pedestrian_3 is further away so expect a weaker force
+    REQUIRE(sfm::ped_ped_repulsive_force(pedestrian_1,pedestrian_2)[1] <= sfm::ped_ped_repulsive_force(pedestrian_1,pedestrian_3)[1]); //pedestrian_3 is further away so expect a weaker force
 }
 
 
