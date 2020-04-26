@@ -41,7 +41,8 @@ TEST_CASE("Test the boundary conditions", "[Tests]") {
 // zero velocity and zero desired speed will give no force 
 sfm::dir2d zero_velocity(0,0);  
 double zero_desired_speed = 0; 
-TargetedPedestrian* stationary_pedestrian = new TargetedPedestrian(origin, destination, zero_velocity, position, zero_desired_speed, relaxation_time);
+TargetedPedestrian p1(origin, destination, zero_velocity, position, zero_desired_speed, relaxation_time);
+TargetedPedestrian* stationary_pedestrian = &p1;
 
 // desired speed of one, relaxation time of one, zero velocity, force will be unit direction vector
 double unit_speed = 1;
@@ -61,7 +62,6 @@ TEST_CASE("Test attractive_force_to_destination", "[Tests]") {
     REQUIRE(sfm::attractive_force_to_destination(one_d_pedestrian)[1] == 1);
     REQUIRE(sfm::attractive_force_to_destination(one_d_pedestrian)[0] == 0);
 }
-
 
 
 //testing repulsive ped_ped_repulsive_force

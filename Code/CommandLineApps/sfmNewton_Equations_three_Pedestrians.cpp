@@ -15,6 +15,7 @@
 #include <sfmMyFunctions.h>
 #include <sfmExceptionMacro.h>
 #include <sfmPedestrian.h>
+#include "sfmTargetedPedestrian.h"
 #include <sfmForces.h>
 #include <iostream>
 #include  <cmath>
@@ -30,34 +31,11 @@ int main(int argc, char** argv)
   try
   {
    //three pedestrians
-    Pedestrian pedestrian_1(sfm::pos2d (0,0),sfm::pos2d (40,9),sfm::dir2d (0,0),sfm::pos2d (0,0), 4, 1);
-    Pedestrian pedestrian_2(sfm::pos2d (1,0),sfm::pos2d (45,9.5),sfm::dir2d (0,0),sfm::pos2d (1,0), 7, 1);
-    Pedestrian pedestrian_3(sfm::pos2d (0,1),sfm::pos2d (35,8),sfm::dir2d (0,0),sfm::pos2d (0,1), 10, 1);
-    std::vector<Pedestrian *> pedestrians{&pedestrian_1,&pedestrian_2,&pedestrian_3};
-    std::vector<std::vector<Pedestrian> > results;
-    std::vector<Pedestrian> values;
-    for (int j=0; j < 8; j++){
-    for (std::vector<Pedestrian *>::size_type i = 0; i != pedestrians.size(); ++i){
-        sfm::dir2d force = sfm::total_force(*pedestrians[i], pedestrians);
-        sfm::dir2d new_velocity = pedestrians[i]->getvelocity() + force*2;
-        double mag_new_velocity = sqrt(new_velocity.scalar_product(new_velocity));
-        double mag_max_velocity = 1.3*(pedestrians[i]->getdesired_speed());
-        if (mag_new_velocity > mag_max_velocity){
-            new_velocity = new_velocity*(mag_max_velocity/mag_new_velocity);
-        }
-        sfm::pos2d new_position = (new_velocity*2).displace(pedestrians[i]->getposition());
-        pedestrians[i]->setvelocity(new_velocity);
-        pedestrians[i]->setposition(new_position);
-        values.push_back(*pedestrians[i]);
-    }
-    results.push_back(values);
-
-    }
+    TargetedPedestrian p1(sfm::pos2d (0,0),sfm::pos2d (40,9),sfm::dir2d (0,0),sfm::pos2d (0,0), 4, 1);
+    TargetedPedestrian p2(sfm::pos2d (1,0),sfm::pos2d (45,9.5),sfm::dir2d (0,0),sfm::pos2d (1,0), 7, 1);
+    TargetedPedestrian p3(sfm::pos2d (0,1),sfm::pos2d (35,8),sfm::dir2d (0,0),sfm::pos2d (0,1), 10, 1);
 
 
-
-
-    
     returnStatus = EXIT_SUCCESS;
   }
   catch (sfm::Exception& e)
