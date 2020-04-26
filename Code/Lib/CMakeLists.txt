@@ -21,6 +21,7 @@ set(PHAS0100ASSIGNMENT2_LIBRARY_SRCS
   sfmForces.cpp
   sfmTargetedPedestrian.cpp
   sfmDirectedPedestrian.cpp
+  sfmPedestrianSpawner.cpp
 )
 
 if (VTK_FOUND)
