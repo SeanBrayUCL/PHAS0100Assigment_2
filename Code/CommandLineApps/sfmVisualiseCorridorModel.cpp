@@ -16,15 +16,21 @@
 #include <sfmExceptionMacro.h>
 #include "sfmBasicTypes.h"
 #include "sfmPedestrian.h"
+#include "sfmVisualiser.h"
+#include "sfmForces.cpp"
 #include <iostream>
 #include  <cmath>
 #include  <vector>
 #include <algorithm>
 #include <random>
+#include <chrono>
+#include <thread>
+
+
 
 const double desired_speed = 1.3;
 const double tau = 0.5;
-const double dt = 1;
+const int number_pedestrians = 40;
 
 
 int main(int argc, char** argv)
@@ -33,30 +39,75 @@ int main(int argc, char** argv)
   int returnStatus = EXIT_FAILURE;
 
   try
-  { //initial pedestrian setup 
+  {     
+  //initial pedestrian setup 
   double x_wrap = sfm::pos2d::get_x_wrap();
-  std::vector<double> y_coordinate(40);
+  double y_wrap = sfm::pos2d::get_y_wrap();
+  sfm::Visualiser viewer(number_pedestrians, x_wrap, y_wrap);
+  std::vector<double> y_coordinate(number_pedestrians);
   std::random_device rd; 
   std::mt19937 gen(rd());
   std::uniform_real_distribution<> y(0.0, 10.0);
   std::generate(y_coordinate.begin(), y_coordinate.end(), [&, y]() mutable {
         return y(gen);
 	 });
+
+
+
+
+   std::vector<Pedestrian> p;
    std::vector<Pedestrian*> pedestrians;
-   for(int i =0; i<20; i++)
+   double x_coord = x_wrap-0.1;
+   for(int i =0; i<(number_pedestrians/2); i++)
    {
-     Pedestrian pedestrian(sfm::pos2d(0,y_coordinate[i]),sfm::pos2d(x_wrap-0.01,y_coordinate[i]),sfm::dir2d(0,0),sfm::pos2d(0,y_coordinate[i]),desired_speed,tau);
-     pedestrians.push_back(&pedestrian);
+     Pedestrian pedestrian(sfm::pos2d(0,y_coordinate[i]),sfm::pos2d(x_coord,y_coordinate[i]),sfm::dir2d(0,0),sfm::pos2d(0,y_coordinate[i]),desired_speed,tau);
+     p.push_back(pedestrian);
    }
-   for(int i=20; i<40; i++)
+   for(int i=(number_pedestrians/2); i<number_pedestrians; i++)
    {
-     Pedestrian pedestrian(sfm::pos2d(x_wrap-0.01,y_coordinate[i]),sfm::pos2d(0,y_coordinate[i]),sfm::dir2d(0,0),sfm::pos2d(x_wrap-0.01,y_coordinate[i]),desired_speed,tau);
-     pedestrians.push_back(&pedestrian);
+     
+     Pedestrian pedestrian(sfm::pos2d(x_coord,y_coordinate[i]),sfm::pos2d(0,y_coordinate[i]),sfm::dir2d(0,0),sfm::pos2d(x_coord,y_coordinate[i]),desired_speed,tau);
+     p.push_back(pedestrian);
+   }
+
+   for (auto & i : p){
+     pedestrians.push_back(&i);
    }
 
 
+
+   
+      
+    for (int j=0; j < 1000; j++){
+    for (std::vector<Pedestrian *>::size_type i = 0; i != pedestrians.size(); ++i){
+        sfm::dir2d force = sfm::total_force(pedestrians[i], pedestrians);
+        sfm::dir2d new_velocity = pedestrians[i]->getvelocity() + force*dt;
+        double mag_new_velocity = sqrt(new_velocity.scalar_product(new_velocity));
+        double mag_max_velocity = 1.3*(pedestrians[i]->getdesired_speed());
+        if (mag_new_velocity > mag_max_velocity){
+            new_velocity = new_velocity*(mag_max_velocity/mag_new_velocity);
+        }
+        sfm::pos2d new_position = (new_velocity*2).displace(pedestrians[i]->getposition());
+        pedestrians[i]->setvelocity(new_velocity);
+        pedestrians[i]->setposition(new_position);   
+    }
+
+    // Send updated pedestrian positions to viewer 
+    for(int i = 0; i < number_pedestrians; i++){
+      viewer.SetPedestrian(i, pedestrians[i]->getposition()[1],  pedestrians[i]->getposition()[0], 
+		              pedestrians[i]->getvelocity()[1],  pedestrians[i]->getvelocity()[0]);
+    }
+    // Tell viewer to redraw scene
+    viewer.UpdateScene();
+
+    // Sleep for a bit so can see visualiser updating 
+    std::this_thread::sleep_for (std::chrono::milliseconds(200));
 
     
+   
+
+    }
+
     returnStatus = EXIT_SUCCESS;
   }
   catch (sfm::Exception& e)

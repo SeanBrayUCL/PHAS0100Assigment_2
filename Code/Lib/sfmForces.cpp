@@ -3,7 +3,7 @@
 #include <vector>
 #include <cmath>
 
-const double dt = 2;
+const double dt = 1;
 const double sigma = 0.3;
 const double V_0 = 2.1;
 const double c = 0.5;

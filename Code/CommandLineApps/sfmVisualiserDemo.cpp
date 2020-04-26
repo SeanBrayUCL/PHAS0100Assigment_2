@@ -52,7 +52,7 @@ int main(int argc, char** argv){
   std::uniform_real_distribution<double> ranvy(-1.3, 1.3);
 
   // Dummy loop over time
-  int n_steps = 1000;
+  int n_steps = 10;
   for(int i = 0; i < n_steps; i++){ 
 
     // Simulate some pedestrian movement 
