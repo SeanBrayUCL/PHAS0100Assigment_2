@@ -14,7 +14,7 @@
 
 #include <sfmMyFunctions.h>
 #include <sfmExceptionMacro.h>
-#include <sfmPedestrian.h>
+#include <sfmTargetedPedestrian.h>
 #include <sfmForces.h>
 #include <iostream>
 #include  <cmath>
@@ -30,15 +30,13 @@ int main(int argc, char** argv)
   try
   {
    //three pedestrians
-    Pedestrian p1(sfm::pos2d (0,0),sfm::pos2d (40,9),sfm::dir2d (0,0),sfm::pos2d (0,0), 4, 1);
-    Pedestrian p2(sfm::pos2d (1,0),sfm::pos2d (45,9.5),sfm::dir2d (0,0),sfm::pos2d (1,0), 7, 1);
-    Pedestrian p3(sfm::pos2d (0,1),sfm::pos2d (35,8),sfm::dir2d (0,0),sfm::pos2d (0,1), 10, 1);
-    Pedestrian* pedestrian_1 = &p1;
-    Pedestrian* pedestrian_2 = &p2;
-    Pedestrian* pedestrian_3 = &p3;
+    TargetedPedestrian p1(sfm::pos2d (0,0),sfm::pos2d (40,9),sfm::dir2d (0,0),sfm::pos2d (0,0), 4, 1);
+    TargetedPedestrian p2(sfm::pos2d (1,0),sfm::pos2d (45,9.5),sfm::dir2d (0,0),sfm::pos2d (1,0), 7, 1);
+    TargetedPedestrian p3(sfm::pos2d (0,1),sfm::pos2d (35,8),sfm::dir2d (0,0),sfm::pos2d (0,1), 10, 1);
+    TargetedPedestrian* pedestrian_1 = &p1;
+    TargetedPedestrian* pedestrian_2 = &p2;
+    TargetedPedestrian* pedestrian_3 = &p3;
     std::vector<Pedestrian *> pedestrians{pedestrian_1,pedestrian_2,pedestrian_3};
-    std::vector<std::vector<Pedestrian> > results;
-    std::vector<Pedestrian> values;
     for (int j=0; j < 100; j++){
     for (std::vector<Pedestrian *>::size_type i = 0; i != pedestrians.size(); ++i){
         sfm::dir2d force = sfm::total_force(pedestrians[i], pedestrians);

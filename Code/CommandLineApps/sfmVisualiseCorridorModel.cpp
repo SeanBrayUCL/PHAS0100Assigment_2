@@ -15,7 +15,7 @@
 #include <sfmMyFunctions.h>
 #include <sfmExceptionMacro.h>
 #include "sfmBasicTypes.h"
-#include "sfmPedestrian.h"
+#include "sfmTargetedPedestrian.h"
 #include "sfmVisualiser.h"
 #include "sfmForces.cpp"
 #include <iostream>
@@ -55,18 +55,18 @@ int main(int argc, char** argv)
 
 
 
-   std::vector<Pedestrian> p;
+   std::vector<TargetedPedestrian> p;
    std::vector<Pedestrian*> pedestrians;
    double x_coord = x_wrap-0.1;
    for(int i =0; i<(number_pedestrians/2); i++)
    {
-     Pedestrian pedestrian(sfm::pos2d(0,y_coordinate[i]),sfm::pos2d(x_coord,y_coordinate[i]),sfm::dir2d(0,0),sfm::pos2d(0,y_coordinate[i]),desired_speed,tau);
+     TargetedPedestrian pedestrian(sfm::pos2d(0,y_coordinate[i]),sfm::pos2d(x_coord,y_coordinate[i]),sfm::dir2d(0,0),sfm::pos2d(0,y_coordinate[i]),desired_speed,tau);
      p.push_back(pedestrian);
    }
    for(int i=(number_pedestrians/2); i<number_pedestrians; i++)
    {
      
-     Pedestrian pedestrian(sfm::pos2d(x_coord,y_coordinate[i]),sfm::pos2d(0,y_coordinate[i]),sfm::dir2d(0,0),sfm::pos2d(x_coord,y_coordinate[i]),desired_speed,tau);
+     TargetedPedestrian pedestrian(sfm::pos2d(x_coord,y_coordinate[i]),sfm::pos2d(0,y_coordinate[i]),sfm::dir2d(0,0),sfm::pos2d(x_coord,y_coordinate[i]),desired_speed,tau);
      p.push_back(pedestrian);
    }
 
@@ -79,7 +79,7 @@ int main(int argc, char** argv)
    
       
     for (int j=0; j < 1000; j++){
-    for (std::vector<Pedestrian *>::size_type i = 0; i != pedestrians.size(); ++i){
+    for (std::vector<TargetedPedestrian *>::size_type i = 0; i != pedestrians.size(); ++i){
         sfm::dir2d force = sfm::total_force(pedestrians[i], pedestrians);
         sfm::dir2d new_velocity = pedestrians[i]->getvelocity() + force*dt;
         double mag_new_velocity = sqrt(new_velocity.scalar_product(new_velocity));

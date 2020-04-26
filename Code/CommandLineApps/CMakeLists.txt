@@ -13,8 +13,9 @@
 #============================================================================*/
 
 set(_command_line_apps
-  sfmNewton_Equations_three_Pedestrians
-  sfmVisualiseCorridorModel
+   sfmNewton_Equations_three_Pedestrians
+   sfmVisualiseCorridorModel
+
 )
 
 if (VTK_FOUND)
