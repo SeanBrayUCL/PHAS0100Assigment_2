@@ -39,7 +39,7 @@ int main(int argc, char** argv)
     std::vector<Pedestrian *> pedestrians{pedestrian_1,pedestrian_2,pedestrian_3};
     std::vector<std::vector<Pedestrian> > results;
     std::vector<Pedestrian> values;
-    for (int j=0; j < 8; j++){
+    for (int j=0; j < 100; j++){
     for (std::vector<Pedestrian *>::size_type i = 0; i != pedestrians.size(); ++i){
         sfm::dir2d force = sfm::total_force(pedestrians[i], pedestrians);
         sfm::dir2d new_velocity = pedestrians[i]->getvelocity() + force*2;
@@ -49,18 +49,22 @@ int main(int argc, char** argv)
             new_velocity = new_velocity*(mag_max_velocity/mag_new_velocity);
         }
         sfm::pos2d new_position = (new_velocity*2).displace(pedestrians[i]->getposition());
-        pedestrians[i]->setvelocity(new_velocity);
-        pedestrians[i]->setposition(new_position);
-        values.push_back(*pedestrians[i]);
+         pedestrians[i]->setvelocity(new_velocity);
+         pedestrians[i]->setposition(new_position);
     }
-    results.push_back(values);
-
-    }
-
-
-
-
     
+    }
+    
+    std::cout << "Pedestrian_1 final positon" << std::endl << pedestrians[0]->getposition()[1] << std::endl << pedestrians[0]->getposition()[0] << std::endl;
+    std::cout << "Pedestrian_1 final veloctiy" << std::endl << pedestrians[0]->getvelocity()[1] << std::endl << pedestrians[0]->getvelocity()[0] << std::endl;
+    
+    std::cout << "Pedestrian_2 final positon" << std::endl << pedestrians[1]->getposition()[1] << std::endl << pedestrians[1]->getposition()[0] << std::endl;
+    std::cout << "Pedestrian_2 final veloctiy" << std::endl << pedestrians[1]->getvelocity()[1] << std::endl << pedestrians[1]->getvelocity()[0] << std::endl;
+    
+    std::cout << "Pedestrian_3 final positon" << std::endl << pedestrians[2]->getposition()[1] << std::endl << pedestrians[2]->getposition()[0] << std::endl;
+    std::cout << "Pedestrian_3 final veloctiy" << std::endl << pedestrians[2]->getvelocity()[1] << std::endl << pedestrians[2]->getvelocity()[0] << std::endl;
+    
+
     returnStatus = EXIT_SUCCESS;
   }
   catch (sfm::Exception& e)
