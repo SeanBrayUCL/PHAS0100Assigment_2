@@ -38,16 +38,18 @@ TEST_CASE("Test the boundary conditions", "[Tests]") {
 // zero velocity and zero desired speed will give no force 
 sfm::dir2d zero_velocity(0,0);  
 double zero_desired_speed = 0; 
-Pedestrian stationary_pedestrian(origin, destination, zero_velocity, position, zero_desired_speed, relaxation_time);
-
+Pedestrian sp(origin, destination, zero_velocity, position, zero_desired_speed, relaxation_time);
+Pedestrian* stationary_pedestrian = &sp;
 // desired speed of one, relaxation time of one, zero velocity, force will be unit direction vector
 double unit_speed = 1;
-Pedestrian unit_desired_speed_pedestrian(origin, destination, zero_velocity, position, unit_speed, relaxation_time);
+Pedestrian udsp(origin, destination, zero_velocity, position, unit_speed, relaxation_time);
+Pedestrian* unit_desired_speed_pedestrian = &udsp;
 
 // one dimensional unit desired speed pedestrian
 sfm::pos2d one_d_destination(1,0); 
 sfm::pos2d one_d_position(0,0); 
-Pedestrian one_d_pedestrian(origin, one_d_destination, zero_velocity, one_d_position, unit_speed, relaxation_time);
+Pedestrian odp(origin, one_d_destination, zero_velocity, one_d_position, unit_speed, relaxation_time);
+Pedestrian* one_d_pedestrian = &odp;
 
 TEST_CASE("Test attractive_force_to_destination", "[Tests]") {
     // position on x/y_wrap should be same as (0,0)
@@ -71,9 +73,12 @@ sfm::pos2d destination_3(9,0);
 sfm::dir2d velocity_3(1,0); 
 sfm::pos2d position_3(8,0); 
 
-Pedestrian pedestrian_1(origin, destination_1, velocity_1, position_1, desired_speed, relaxation_time);
-Pedestrian pedestrian_2(origin, destination_2, velocity_2, position_2, desired_speed, relaxation_time);
-Pedestrian pedestrian_3(origin, destination_3, velocity_3, position_3, desired_speed, relaxation_time);
+Pedestrian p1(origin, destination_1, velocity_1, position_1, desired_speed, relaxation_time);
+Pedestrian p2(origin, destination_2, velocity_2, position_2, desired_speed, relaxation_time);
+Pedestrian p3(origin, destination_3, velocity_3, position_3, desired_speed, relaxation_time);
+Pedestrian* pedestrian_1 = &p1;
+Pedestrian* pedestrian_2 = &p2;
+Pedestrian* pedestrian_3 = &p3;
 
 TEST_CASE("Test ped_ped_repulsive_force", "[Tests]") {
     // position on x/y_wrap should be same as (0,0)
