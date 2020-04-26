@@ -6,8 +6,8 @@
 #include <vector>
 
 const double speed = 1;
-const double relaxation_time = 1;
-sfm::dir2d starting_velocity(0,0);
+const double rt = 1;
+const sfm::dir2d sv(0,0);
 
 enum PedestrianType {pos, dir};
 
@@ -15,6 +15,10 @@ class PedestrianSpawner {
         
     public:
     static std::vector<Pedestrian*> createUniform(int n, PedestrianType type, sfm::pos2d dest);
+
+    static std::vector<Pedestrian*> createDistributed(int n, PedestrianType type, sfm::pos2d dest, sfm::pos2d min, sfm::pos2d max);
+
+
 
 
 };

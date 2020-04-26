@@ -4,6 +4,7 @@
 #include "sfmForces.h"
 #include "sfmTargetedPedestrian.h"
 #include "sfmDirectedPedestrian.h"
+#include "sfmPedestrianSpawner.h"
 #include <iostream>
 #include <memory>
 
@@ -88,3 +89,7 @@ TEST_CASE("Test ped_ped_repulsive_force", "[Tests]") {
 
 
 DirectedPedestrian test(origin, velocity_1, velocity_1, origin, desired_speed, desired_speed);
+
+PedestrianType a = pos;
+sfm::pos2d point(5,39.4);
+std::vector<Pedestrian*> final = PedestrianSpawner::createUniform(10, a, point);
