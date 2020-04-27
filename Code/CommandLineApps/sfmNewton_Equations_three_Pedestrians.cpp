@@ -11,8 +11,6 @@
   See LICENSE.txt in the top level directory for details.
 
 =============================================================================*/
-
-#include <sfmMyFunctions.h>
 #include <sfmExceptionMacro.h>
 #include <sfmTargetedPedestrian.h>
 #include <sfmForces.h>

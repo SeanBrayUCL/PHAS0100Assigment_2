@@ -12,7 +12,6 @@
 
 =============================================================================*/
 
-#include <sfmMyFunctions.h>
 #include <sfmExceptionMacro.h>
 #include "sfmBasicTypes.h"
 #include "sfmTargetedPedestrian.h"
