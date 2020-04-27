@@ -8,37 +8,36 @@ PHAS0100Assignment2
 Purpose
 -------
 
-Extended version of CMakeCatch2 for PHAS0100 Assignment 2 that includes vec2d, pos2d and dir2d classes with wrapping functionality for periodic boundary conditions. As with CMakeCatch2 this can be used a starting point for a reasonable folder structure for [CMake](https://cmake.org/) based projects,
-that use [CTest](https://cmake.org/) to run unit tests via [Catch](https://github.com/catchorg/Catch2).
+Implement the Social Force Model from [Helbing & Molner Phys. Rev. E51, 4282 (1995)].
 
-Now includes a Visualisation Toolkit (VTK) based visualiser class `Code/Lib/sfmVisualiser` that can be used to plot pedestrian positions and velocities as they are simulated. This requires VTK 7 to be installed, see below. An example of its use in application given in `Code/CommandLineApps/sfmVisualiserDemo.cpp`. 
-
-Credits
--------
-
-This project was developed as a teaching aid for UCL's ["Research Computing with C++"](http://rits.github-pages.ucl.ac.uk/research-computing-with-cpp/)
-course developed by [Dr. James Hetherington](http://www.ucl.ac.uk/research-it-services/people/james)
-and [Dr. Matt Clarkson](https://iris.ucl.ac.uk/iris/browse/profile?upi=MJCLA42) and then extended by Dr. Jim Dobson based on code by Dr Tim Spain.
 
 Build Instructions
 ------------------
-
-If you want to use the VTK visualiser you need the VTK development libraries. On Ubuntu these can be installed with:
-``` shell
-apt-get install libvtk7-dev
-```
-
-This project itself can be built if you just want to test it. In Linux terms that
-would be:
+After opening the zip folder 12007217 the project can be built using the following commands:
 ``` cmake
-git clone https://github.com/MattClarkson/PHAS0100Assignment2
 mkdir PHAS0100Assignment2-Build
 cd PHAS0100Assignment2-Build
 cmake ../PHAS0100Assignment2
 make
 ```
-You can either use this project with the current naming convention or you can use it as a 
-template to create your own project with a different naming convention. To do so,
-please refer to the [CMakeTemplateRenamer](https://github.com/MattClarkson/CMakeTemplateRenamer)
-which will show you how to clone this repository, and rename all the variables to names of your choice.
-Then you would simply build your new project, using cmake, as shown above.
+If you want to use the VTK visualiser you need the VTK development libraries. On Ubuntu these can be installed with:
+``` shell
+apt-get install libvtk7-dev
+```
+
+Applications
+------------------
+The project contains four seperate applications.
+
+A first example where the model is implmented for three random pedestrians ("sfmNewton_Equations_three_Pedestrians.cpp")
+
+A second, where the model is implemented and visualised for two groups of pedestrians traveling in a corridor towards each other ("sfmVisualiseCorridorModel.cpp").
+
+A third, where the model is implemented and visualised for for a group of pedestrians starting at one end of the two dimensional space with a target at the opposite end of the two dimensional space ("sfm_Visualiser_TargetedPedestrians.cpp").
+
+Finally a fourth, which implements the model for a mix of targeted and directed pedestrians ("sfmVisualiser_Targeted_Directed_Pedestrians.cpp").
+
+Each of these applications can be found in the "bin" folder after the project has been built.
+
+
+
