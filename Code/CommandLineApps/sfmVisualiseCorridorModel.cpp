@@ -31,7 +31,7 @@
 const double desired_speed = 1.3;
 const double tau = 0.5;
 const int number_pedestrians = 30;
-const double dt = 1;
+
 
 
 int main(int argc, char** argv)
@@ -84,7 +84,7 @@ int main(int argc, char** argv)
         if (mag_new_velocity > mag_max_velocity){
             new_velocity = new_velocity*(mag_max_velocity/mag_new_velocity);
         }
-        sfm::pos2d new_position = (new_velocity*2).displace(pedestrians[i]->getposition());
+        sfm::pos2d new_position = (new_velocity*dt).displace(pedestrians[i]->getposition());
         pedestrians[i]->setvelocity(new_velocity);
         pedestrians[i]->setposition(new_position);   
     }

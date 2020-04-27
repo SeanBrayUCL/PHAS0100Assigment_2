@@ -3,14 +3,6 @@
 #include <vector>
 #include <cmath>
 
-const double dt = 1;
-const double sigma = 0.3;
-const double V_0 = 2.1;
-const double c = 0.5;
-const double U_0 = 10;
-const double R = 0.2;
-
-
 namespace sfm 
 {
 

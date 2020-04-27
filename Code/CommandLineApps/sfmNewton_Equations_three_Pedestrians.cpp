@@ -20,8 +20,6 @@
 #include  <cmath>
 #include  <vector>
 
-const double dt = 2;
-
 int main(int argc, char** argv)
 {
 
@@ -40,13 +38,13 @@ int main(int argc, char** argv)
     for (int j=0; j < 100; j++){
     for (std::vector<Pedestrian *>::size_type i = 0; i != pedestrians.size(); ++i){
         sfm::dir2d force = sfm::total_force(pedestrians[i], pedestrians);
-        sfm::dir2d new_velocity = pedestrians[i]->getvelocity() + force*2;
+        sfm::dir2d new_velocity = pedestrians[i]->getvelocity() + force*dt;
         double mag_new_velocity = sqrt(new_velocity.scalar_product(new_velocity));
         double mag_max_velocity = 1.3*(pedestrians[i]->getdesired_speed());
         if (mag_new_velocity > mag_max_velocity){
             new_velocity = new_velocity*(mag_max_velocity/mag_new_velocity);
         }
-        sfm::pos2d new_position = (new_velocity*2).displace(pedestrians[i]->getposition());
+        sfm::pos2d new_position = (new_velocity*dt).displace(pedestrians[i]->getposition());
          pedestrians[i]->setvelocity(new_velocity);
          pedestrians[i]->setposition(new_position);
     }

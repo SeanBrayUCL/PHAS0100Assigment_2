@@ -29,8 +29,6 @@
 #include <thread>
 
 
-
-const double dt = 1;
 const int number__TargetedPedestrian = 40;
 const int number__DirectedPedestrians = 40;
 const double des_speed = 1.3;
@@ -127,7 +125,7 @@ int main(int argc, char** argv)
           if (mag_new_velocity > mag_max_velocity){
               new_velocity = new_velocity*(mag_max_velocity/mag_new_velocity);
           }
-          sfm::pos2d new_position = (new_velocity*2).displace(pedestrians[i]->getposition());
+          sfm::pos2d new_position = (new_velocity*dt).displace(pedestrians[i]->getposition());
           pedestrians[i]->setvelocity(new_velocity);
           pedestrians[i]->setposition(new_position);
         }
