@@ -15,6 +15,8 @@
 set(_command_line_apps
    sfmNewton_Equations_three_Pedestrians
    sfmVisualiseCorridorModel
+   sfmVisualiser_TargetedPedestrians
+   sfmVisualiser_Targeted_Directed_Pedestrians
 
 )
 

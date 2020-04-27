@@ -17,7 +17,7 @@
 #include "sfmBasicTypes.h"
 #include "sfmTargetedPedestrian.h"
 #include "sfmVisualiser.h"
-#include "sfmForces.cpp"
+#include "sfmForces.h"
 #include <iostream>
 #include  <cmath>
 #include  <vector>
@@ -30,7 +30,8 @@
 
 const double desired_speed = 1.3;
 const double tau = 0.5;
-const int number_pedestrians = 40;
+const int number_pedestrians = 30;
+const double dt = 1;
 
 
 int main(int argc, char** argv)
@@ -44,6 +45,7 @@ int main(int argc, char** argv)
   double x_wrap = sfm::pos2d::get_x_wrap();
   double y_wrap = sfm::pos2d::get_y_wrap();
   sfm::Visualiser viewer(number_pedestrians, x_wrap, y_wrap);
+
   std::vector<double> y_coordinate(number_pedestrians);
   std::random_device rd; 
   std::mt19937 gen(rd());
@@ -51,10 +53,6 @@ int main(int argc, char** argv)
   std::generate(y_coordinate.begin(), y_coordinate.end(), [&, y]() mutable {
         return y(gen);
 	 });
-
-
-
-
    std::vector<TargetedPedestrian> p;
    std::vector<Pedestrian*> pedestrians;
    double x_coord = x_wrap-0.1;
@@ -76,7 +74,6 @@ int main(int argc, char** argv)
 
 
 
-   
       
     for (int j=0; j < 1000; j++){
     for (std::vector<TargetedPedestrian *>::size_type i = 0; i != pedestrians.size(); ++i){
