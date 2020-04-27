@@ -26,24 +26,29 @@
 		return y(gen);
 	 });
 
-     std::vector<Pedestrian*> result;
-     if(type == 0){
-     for(int i=0; i<n; i++){
-         sfm::pos2d origin(y_coordinates[i],x_coordinates[i]);
-         TargetedPedestrian pedestrian(origin,dest,sv, origin, speed, speed);
-         result.push_back(&pedestrian);
-     }
-     }
-     else {
-         for(int i=0; i<n; i++){
-         sfm::pos2d origin(y_coordinates[i],x_coordinates[i]);
-         sfm::dir2d dest_dir(dest[1], dest[0]);
-         DirectedPedestrian pedestrian(origin,dest_dir,sv, origin, speed, speed);
-         result.push_back(&pedestrian);
-
-     }
-     }
-     return result;
+    std::vector<Pedestrian*> result;  
+    if(type == 0){ 
+        std::vector<TargetedPedestrian> p; 
+        for(int i=0; i<n; i++){
+            TargetedPedestrian pedestrian(sfm::pos2d(x_coordinates[i],y_coordinates[i]),dest,sfm::dir2d(0,0), sfm::pos2d(x_coordinates[i],y_coordinates[i]), 1.3, 0.5);
+            p.push_back(pedestrian);
+        }
+        for(int i=0; i<n; i++){
+            result.push_back(&p[i]);
+        }
+    }
+    else {
+        std::vector<DirectedPedestrian> p;
+        for(int i=0; i<n; i++){
+            sfm::dir2d dest_dir(dest[1], dest[0]);
+            DirectedPedestrian pedestrian(sfm::pos2d(x_coordinates[i],y_coordinates[i]),dest_dir,sfm::dir2d(0,0), sfm::pos2d(x_coordinates[i],y_coordinates[i]), 1.3, 0.5);
+            p.push_back(pedestrian);
+    }
+            for(int i=0; i<n; i++){
+            result.push_back(&p[i]);
+        }
+    }
+    return result;
 };
 
 std::vector<Pedestrian*> createDistributed(int n, PedestrianType type, sfm::pos2d dest, sfm::pos2d min, sfm::pos2d max)
@@ -70,18 +75,26 @@ std::vector<Pedestrian*> createDistributed(int n, PedestrianType type, sfm::pos2
 
      std::vector<Pedestrian*> result;
      if(type == 0){
-     for(int i=0; i<n; i++){
-         sfm::pos2d origin(y_coordinates[i],x_coordinates[i]);
-         TargetedPedestrian pedestrian(origin,dest,sv, origin, speed, speed);
-         result.push_back(&pedestrian);
+         std::vector<TargetedPedestrian> p;
+         for(int i=0; i<n; i++){
+         sfm::pos2d origin(x_coordinates[i],y_coordinates[i]);
+         TargetedPedestrian pedestrian(origin,dest,sfm::dir2d(0,0), origin, speed, rt);
+         p.push_back(pedestrian);
+     }
+       for(int i=0; i<n; i++){
+            result.push_back(&p[i]);
      }
      }
      else {
+         std::vector<DirectedPedestrian> p;
          for(int i=0; i<n; i++){
          sfm::pos2d origin(y_coordinates[i],x_coordinates[i]);
          sfm::dir2d dest_dir(dest[1], dest[0]);
-         DirectedPedestrian pedestrian(origin,dest_dir,sv, origin, speed, speed);
-         result.push_back(&pedestrian);
+         DirectedPedestrian pedestrian(origin,dest_dir,sfm::dir2d(0,0), origin, speed, rt);
+         p.push_back(pedestrian);
+     }
+        for(int i=0; i<n; i++){
+            result.push_back(&p[i]);
 
      }
      }

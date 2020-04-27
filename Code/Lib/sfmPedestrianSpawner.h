@@ -5,9 +5,8 @@
 #include "sfmPedestrian.h"
 #include <vector>
 
-const double speed = 1;
-const double rt = 1;
-const sfm::dir2d sv(0,0);
+const double speed = 1.3;
+const double rt = 0.5;
 
 enum PedestrianType {pos, dir};
 
