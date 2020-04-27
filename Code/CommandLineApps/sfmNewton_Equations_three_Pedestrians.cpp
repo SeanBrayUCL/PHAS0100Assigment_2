@@ -39,9 +39,16 @@ int main(int argc, char** argv)
     TargetedPedestrian* pedestrian_3 = &p3;
     std::vector<Pedestrian *> pedestrians{pedestrian_1,pedestrian_2,pedestrian_3};
     for (int j=0; j < 100; j++){
-    for (std::vector<Pedestrian *>::size_type i = 0; i != pedestrians.size(); ++i){
-        sfm::dir2d force = sfm::total_force(pedestrians[i], pedestrians);
-        sfm::dir2d new_velocity = pedestrians[i]->getvelocity() + force*dt;
+    Pedestrian* x;  
+    std::vector<sfm::dir2d> force;  
+    #pragma omp parallel private(x), shared(force)
+    for (std::vector<TargetedPedestrian *>::size_type i = 0; i != pedestrians.size(); ++i){
+        x = pedestrians[i];
+        force.push_back(sfm::total_force(x, pedestrians));
+    }
+
+    for (std::vector<TargetedPedestrian *>::size_type i = 0; i != pedestrians.size(); ++i){
+        sfm::dir2d new_velocity = pedestrians[i]->getvelocity() + force[i]*dt;
         double mag_new_velocity = sqrt(new_velocity.scalar_product(new_velocity));
         double mag_max_velocity = 1.3*(pedestrians[i]->getdesired_speed());
         if (mag_new_velocity > mag_max_velocity){
