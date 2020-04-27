@@ -17,11 +17,13 @@
 #include "sfmVisualiser.h"
 #include "sfmForces.h"
 #include <iostream>
-#include  <cmath>
-#include  <vector>
+#include <cmath>
+#include <vector>
 #include <algorithm>
 #include <random>
+#include <iomanip>
 #include <chrono>
+#include <ctime>
 #include <thread>
 
 
@@ -34,7 +36,8 @@ const int number_pedestrians = 30;
 
 int main(int argc, char** argv)
 {
-
+  std::clock_t c_start = std::clock();
+  auto t_start = std::chrono::high_resolution_clock::now();
   int returnStatus = EXIT_FAILURE;
 
   try
@@ -73,7 +76,7 @@ int main(int argc, char** argv)
 
 
       
-    for (int j=0; j < 1000; j++){
+    for (int j=0; j < 100; j++){
     for (std::vector<TargetedPedestrian *>::size_type i = 0; i != pedestrians.size(); ++i){
         sfm::dir2d force = sfm::total_force(pedestrians[i], pedestrians);
         sfm::dir2d new_velocity = pedestrians[i]->getvelocity() + force*dt;
@@ -96,7 +99,7 @@ int main(int argc, char** argv)
     viewer.UpdateScene();
 
     // Sleep for a bit so can see visualiser updating 
-    std::this_thread::sleep_for (std::chrono::milliseconds(200));
+    std::this_thread::sleep_for (std::chrono::milliseconds(100));
 
     
    
@@ -113,6 +116,15 @@ int main(int argc, char** argv)
   {
     std::cerr << "Caught std::exception: " << e.what() << std::endl;
   }
+
+  std::clock_t c_end = std::clock();
+  auto t_end = std::chrono::high_resolution_clock::now();
+
+  std::cout << std::fixed << std::setprecision(2) << "CPU time used: "
+            << 1000.0*(c_end-c_start) / CLOCKS_PER_SEC << " ms\n"
+            << "Wall clock time passed: "
+            << std::chrono::duration<double, std::milli>(t_end -t_start).count()
+            << " ms\n";
 
   return returnStatus;
 }
