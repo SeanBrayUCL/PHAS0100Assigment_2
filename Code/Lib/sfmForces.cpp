@@ -32,7 +32,7 @@ double semiminor_axis_ellipse(Pedestrian* pedestrian_1, Pedestrian* pedestrian_2
     sfm::pos2d position_pedestrian_2 = pedestrian_2->getposition();
     sfm::dir2d direction_vector = position_pedestrian_2.direction(position__pedestrian_1);
     double result;
-    if (direction_vector.scalar_product(direction_vector)==0){
+    if (direction_vector.scalar_product(direction_vector)==0){   //will return 0 for pedestrians semiminor axis with itself
         result = 0;
     }
     else{
@@ -61,7 +61,7 @@ sfm::dir2d ped_ped_repulsive_force_no_line_sight(Pedestrian* pedestrian_1, Pedes
     sfm::pos2d position_pedestrian_2 = pedestrian_2->getposition();
     sfm::dir2d direction_vector = position_pedestrian_2.direction(position__pedestrian_1);
     sfm::dir2d unit_vector(0,0);
-    if (direction_vector.scalar_product(direction_vector) != 0){
+    if (direction_vector.scalar_product(direction_vector) != 0){ //will ensure pedestrian has zero force with respect to itself
         unit_vector = unit_vector + direction_vector*(1/sqrt(direction_vector.scalar_product(direction_vector)));
     }
     return unit_vector*scalars;
