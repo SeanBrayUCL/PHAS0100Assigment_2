@@ -119,18 +119,35 @@ int main(int argc, char** argv)
 
     //Newton Equations
     for (int j=0; j < loop_number; j++){
-      for (std::vector<TargetedPedestrian *>::size_type i = 0; i != pedestrians.size(); ++i){
-          sfm::dir2d force = sfm::total_force(pedestrians[i], pedestrians);
-          sfm::dir2d new_velocity = pedestrians[i]->getvelocity() + force*dt;
-          double mag_new_velocity = sqrt(new_velocity.scalar_product(new_velocity));
-          double mag_max_velocity = 1.3*(pedestrians[i]->getdesired_speed());
-          if (mag_new_velocity > mag_max_velocity){
-              new_velocity = new_velocity*(mag_max_velocity/mag_new_velocity);
-          }
-          sfm::pos2d new_position = (new_velocity*dt).displace(pedestrians[i]->getposition());
-          pedestrians[i]->setvelocity(new_velocity);
-          pedestrians[i]->setposition(new_position);
+    Pedestrian* x;  
+    std::vector<sfm::dir2d> force;  
+    #pragma omp parallel private(x), shared(force)
+    {
+        #pragma omp for
+        for (std::vector<TargetedPedestrian *>::size_type i = 0; i != pedestrians.size(); ++i){
+             x = pedestrians[i];
+             force.push_back(sfm::total_force(x, pedestrians));
+    }
+    }
+    std::vector<sfm::dir2d> new_velocity;
+    std::vector<sfm::pos2d> new_position;
+    #pragma omp parallel private(x), shared(force)
+    {
+      #pragma omp for
+       for (std::vector<TargetedPedestrian *>::size_type i = 0; i != pedestrians.size(); ++i){
+         x = pedestrians[i]; 
+        sfm::dir2d new_velocity = x->getvelocity() + force[i]*dt;
+        double mag_new_velocity = sqrt(new_velocity.scalar_product(new_velocity));
+        double mag_max_velocity = 1.3*(x->getdesired_speed());
+        if (mag_new_velocity > mag_max_velocity){
+            new_velocity = new_velocity*(mag_max_velocity/mag_new_velocity);
         }
+        sfm::pos2d new_position = (new_velocity*dt).displace(x->getposition());
+         pedestrians[i]->setvelocity(new_velocity);
+         pedestrians[i]->setposition(new_position);
+    }
+    }
+        
     // Send updated pedestrian positions to viewer 
     for(int i = 0; i < number_pedestrian; i++){
       viewer.SetPedestrian(i, pedestrians[i]->getposition()[1],  pedestrians[i]->getposition()[0], 
